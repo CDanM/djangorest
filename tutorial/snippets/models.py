@@ -20,14 +20,15 @@ class Snippet(models.Model):
   linenos = models.BooleanField(default = False)
   language = models.CharField(choices=LANGUAGE_CHOICES, default = 'python',max_length=100)
   style = models.CharField(choices=STYLE_CHOICES, default='friendly', max_length=100)
-  def save(self,*args,**kwargs):
+
+  def save(self, *args, **kwargs):
     """
     Use the `pygments` library to create a highlighted HtmlFormatter
     """
     lexer = get_lexer_by_name(self.language)
     linenos = self.linenos and 'table' or False
-    formatter = HtmlFormatter(style=self.style, linenos=linenos,
-                              full=True, **options)
+    options = self.title and {'title': self.title} or {}
+    formatter = HtmlFormatter(style=self.style, linenos=linenos,full=True, **options)
 
     self.highlighted = highlight(self.code,lexer,formatter)
     super(Snippet,self).save(*args, **kwargs)
