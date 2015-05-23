@@ -89,6 +89,9 @@ DATABASES = {
 
     }
 }
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 10
+}
 
 
 # Internationalization
